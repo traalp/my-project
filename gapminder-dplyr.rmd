@@ -1,0 +1,81 @@
+---
+title: "GapMinder Analysis with dplyr"
+author: "Terra Alpaugh"
+date: "April 16, 2016"
+output: html_document
+---
+
+#Load dyplr
+##double hash tags are second headers (so forth...)
+
+```{r}
+#install.packages("dplyr") -- only do this once -- I already have it installed
+library(dplyr) #do everytime I restart R and need dplyr!
+
+```
+
+#Load gapminder
+
+```{r}
+#install.packages('gapminder')
+library(gapminder)
+str(gapminder) #seeing what's in there
+```
+
+#Using Filter (from dplyr)
+
+```{r, results=hide}
+#simple filter example
+filter(gapminder,lifeExp<29) #subsets rows
+filter(gapminder,country=="Rwanda")
+a=filter(gapminder,country%in%c("Rwanda","Afghanistan"))
+View(a)
+
+#compare without dplyr
+gapminder[gapminder$lifeExp <29]
+subset(gapminder,country=="Rwanda") #subsets rows
+
+#the pipe operator, a "then operator": takes the dataframe on the left and passes it through as the first argument in function on the right
+#from Magritte package
+#command, shift, M --gives you this: %>% 
+gapminder %>% head
+head(gapminder) #same as above
+
+gapminder %>% head(3)
+head(gapminder,3)
+
+##subset with select()
+select(gapminder, year, lifeExp) #subsets columns; great, but...
+gapminder %>% 
+  select(year,lifeExp) %>% 
+  head(4) #this tells a storyline: take this dataframe; select these columns, show the first four rows
+
+#an example: calculate mean GDP of Cambodia
+gapminder %>% 
+  filter(country=="Cambodia") %>% 
+  select(country,year,pop,gdpPercap) #could also write this as: select(-continent,-lifeExp)
+#compared analysis in base R
+gapminder[gapminder$country=="Cambodia",c("country","year","pop","gdpPercap")]
+
+#mutate()function: adds a new column to dataframe
+gapminder %>% 
+  mutate(gdp=pop*gdpPercap)
+#making a new variable (total gdp) inside mutate; adding it as column
+
+#exercise: add mutate to previous exercise:What is GDP of Cambodia for each year in our dataset? then summarized?
+gapminder %>% 
+  #filter(country=="Cambodia") %>% 
+  select(country,year,pop,gdpPercap) %>%
+  mutate (gdp=pop*gdpPercap) %>%
+  group_by(country) %>% 
+  summarize(mean_gdp=mean(gdp)) %>% 
+  ungroup()#do this if you group by
+  
+#by commenting out cambodia, can get summary of all countries' GDP   
+
+##DOWNLOAD TIDYR FOR RESHAPING DATA
+
+```
+
+
+reminder: {r, echo=FALSE} this would eliminate the r code from the website 

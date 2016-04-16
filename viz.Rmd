@@ -1,0 +1,58 @@
+---
+title: "viz"
+author: "Terra Alpaugh"
+date: "April 16, 2016"
+output: html_document
+---
+
+##Scatterplot
+```{r load, results='hide', message=FALSE, warning=FALSE}
+library(dplyr)
+library(ggplot2)
+library(gapminder)
+
+#preview data
+gapminder
+
+# get a range of available data
+summary(gapminder)
+```
+
+
+```{r}
+# setup dataframe
+g = gapminder %>%
+  filter(year==2007) %>%   # most recent year 
+  mutate(pop_m = pop/1e6)  # population, millions
+
+# plot scatterplot of most recent year 
+s = ggplot(g, aes(x=gdpPercap, y=lifeExp)) +
+  geom_point() #ggplot takes a dataframe; then aes(specifically what you're looking at); then type of plot
+s 
+
+# add aesthetic of size by population
+s = s + 
+  aes(size=pop_m)
+s
+#add aesthetic of color by continent
+s = s + 
+  aes(color=continent)
+s
+
+ggsave('hans.png')
+
+#add axes, title
+s = s + 
+  ggtitle('Health & Wealth of Nations for 2007') +
+  xlab('GDP per capita ($/year)') +
+  ylab('Life expectancy (years)')
+s
+
+# label legend
+s = s + 
+  scale_colour_discrete(name='Continent') +
+  scale_size_continuous(name='Population (M)')
+s
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
