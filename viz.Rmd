@@ -54,5 +54,38 @@ s = s +
   scale_size_continuous(name='Population (M)')
 s
 ```
+##Boxplots Galore!
+```{r}
+library(plotly) # install.packages('plotly')
+
+# boxplot by continent
+b = ggplot(g, aes(x=continent, y=lifeExp)) +
+  geom_boxplot()
+b
+
+# match color to continents, like scatterplot
+b = b +
+  aes(fill=continent)
+b
+
+# drop legend, add title, update axes labels
+b = b +
+  theme(legend.position='none') +
+  ggtitle('Life Expectancy by Continent for 2007') +
+  xlab('Continent') +
+  ylab('Life expectancy (years)')
+b
+
+
+# boxplot
+ggplotly(b)
+
+#data tables
+#install.packages('DT')
+library(DT)
+datatable(gapminder, options = list(pageLength = 5))
+
+###come back here:http://www.htmlwidgets.org/showcase_datatables.html
+```
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
