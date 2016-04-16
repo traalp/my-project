@@ -34,6 +34,7 @@ s
 s = s + 
   aes(size=pop_m)
 s
+
 #add aesthetic of color by continent
 s = s + 
   aes(color=continent)
@@ -53,13 +54,13 @@ s = s +
   scale_colour_discrete(name='Continent') +
   scale_size_continuous(name='Population (M)')
 s
+
 ```
 ##Boxplots Galore!
 ```{r}
-library(plotly) # install.packages('plotly')
 
 # boxplot by continent
-b = ggplot(g, aes(x=continent, y=lifeExp)) +
+b = ggplot(g, aes(x=continent, y=lifeExp))+
   geom_boxplot()
 b
 
@@ -77,9 +78,6 @@ b = b +
 b
 
 
-# boxplot
-ggplotly(b)
-
 #data tables
 #install.packages('DT')
 library(DT)
@@ -87,5 +85,7 @@ datatable(gapminder, options = list(pageLength = 5))
 
 ###come back here:http://www.htmlwidgets.org/showcase_datatables.html
 ```
+
+
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
